@@ -10,7 +10,9 @@ public class Controller {
     @FXML private TextField txtNome;
 
     public void exibirMensagem(ActionEvent event) {
-        var msg = new Alert(Alert.AlertType.INFORMATION,"Olá Mundo!");
+        var conteudo = "Olá " + txtNome.getText();
+
+        var msg = new Alert(Alert.AlertType.INFORMATION,conteudo);
         msg.show();
     }
 }

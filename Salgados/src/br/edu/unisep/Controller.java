@@ -48,6 +48,7 @@ public class Controller {
         txtMiniBurger.clear();
         txtMiniPizzas.clear();
         txtHotDog.clear();
+        txtEntrega.setValue(null);
 
         chkDecoracao.setSelected(false);
         lblValor.setText("R$ 0,00");

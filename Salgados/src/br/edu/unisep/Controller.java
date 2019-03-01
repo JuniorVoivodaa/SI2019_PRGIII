@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.Period;
 
 public class Controller {
 
@@ -35,6 +37,21 @@ public class Controller {
 
         var valor = (coxinha * 0.1) + (rizolis * 0.1) + (kibe * 0.15) +
                 (miniPizza * 0.2) + (miniBurger * 0.18) + (hotDog * 0.22);
+
+        if (chkDecoracao.isSelected()) {
+            valor = valor * 1.2;
+        }
+
+        var hoje = LocalDate.now();
+        var entrega = txtEntrega.getValue();
+
+        var dif = Period.between(hoje, entrega).getDays();
+
+        if (dif <= 2) {
+            valor = valor * 1.3;
+        } else if (dif <= 5) {
+            valor = valor * 1.2;
+        }
 
         var df = new DecimalFormat("#,##0.00");
         lblValor.setText("R$ " + df.format(valor));

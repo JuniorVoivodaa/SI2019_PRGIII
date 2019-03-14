@@ -1,4 +1,4 @@
-package br.edu.unisep;
+package br.edu.unisep.model.vo;
 
 public class ProdutoVO {
 
@@ -9,6 +9,26 @@ public class ProdutoVO {
     private Double mercadoB;
 
     private Double mercadoC;
+
+    public Double getMaior() {
+        if (mercadoA > mercadoB && mercadoA > mercadoC) {
+            return mercadoA;
+        } else if (mercadoB > mercadoA && mercadoB > mercadoC) {
+            return mercadoB;
+        } else {
+            return mercadoC;
+        }
+    }
+
+    public Double getMenor() {
+        if (mercadoA < mercadoB && mercadoA < mercadoC) {
+            return mercadoA;
+        } else if (mercadoB < mercadoA && mercadoB < mercadoC) {
+            return mercadoB;
+        } else {
+            return mercadoC;
+        }
+    }
 
     public String getDescricao() {
         return descricao;

@@ -1,6 +1,8 @@
 package br.edu.unisep;
 
 import br.edu.unisep.model.vo.MedicaoVO;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,8 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -38,17 +43,44 @@ public class Controller implements Initializable {
         // aparecerão no TableView da tela
         tabMedicoes.setItems(medicoes);
 
+        // Define a largura das colunas. O valor multiplicado por Integer.MAX_VALUE
+        // indica o percentual de largura da coluna
+        colData.setMaxWidth(Integer.MAX_VALUE * 30.0);
+        colSist.setMaxWidth(Integer.MAX_VALUE * 20.0);
+        colDiast.setMaxWidth(Integer.MAX_VALUE * 20.0);
+        colResultado.setMaxWidth(Integer.MAX_VALUE * 30.0);
+
         // Define qual atributo do objeto MedicaoVO será exibido
         // em cada uma das colunas que compõem o TableView
-        colData.setCellValueFactory(new PropertyValueFactory<>("data"));
+        //colData.setCellValueFactory(new PropertyValueFactory<>("data"));
         colSist.setCellValueFactory(new PropertyValueFactory<>("sistolica"));
         colDiast.setCellValueFactory(new PropertyValueFactory<>("diastolica"));
         colResultado.setCellValueFactory(new PropertyValueFactory<>("resultado"));
+
+        var dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+//        colData.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MedicaoVO, String>, ObservableValue<String>>() {
+//            @Override
+//            public ObservableValue<String> call(TableColumn.CellDataFeatures<MedicaoVO, String> cell) {
+//                var data = cell.getValue().getData();
+//                var dataFmt = new SimpleStringProperty(dtf.format(data));
+//                return dataFmt;
+//            }
+//        });
+
+
+        colData.setCellValueFactory( (cell) -> {
+            var data = cell.getValue().getData();
+            var dataFmt = new SimpleStringProperty(dtf.format(data));
+            return dataFmt;
+        });
+
     }
 
     public void salvar(ActionEvent event) {
 
         var med = new MedicaoVO();
+
         med.setData(txtData.getValue());
         med.setSistolica(Integer.valueOf(txtSist.getText()));
         med.setDiastolica(Integer.valueOf(txtDiast.getText()));

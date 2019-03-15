@@ -2,7 +2,6 @@ package br.edu.unisep;
 
 import br.edu.unisep.model.vo.MedicaoVO;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,10 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -86,15 +83,15 @@ public class Controller implements Initializable {
         med.setDiastolica(Integer.valueOf(txtDiast.getText()));
 
         if (med.getSistolica() <= 120 && med.getDiastolica() <= 80) {
-            med.setResultado("Normal");
+            med.setResultado(1);
         } else if (med.getSistolica() < 140 || med.getDiastolica() < 90) {
-            med.setResultado("Pré-Hipertenso");
+            med.setResultado(2);
         } else if (med.getSistolica() < 160 || med.getDiastolica() < 100) {
-            med.setResultado("Hipertenso I");
+            med.setResultado(3);
         } else if (med.getSistolica() < 180 || med.getDiastolica() < 110) {
-            med.setResultado("Hipertenso II");
+            med.setResultado(4);
         } else {
-            med.setResultado("Crítico");
+            med.setResultado(5);
         }
 
         // Adiciona o objeto MedicaoVO criado na lista.

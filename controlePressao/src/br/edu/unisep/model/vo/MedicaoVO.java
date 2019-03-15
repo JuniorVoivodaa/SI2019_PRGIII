@@ -4,13 +4,15 @@ import java.time.LocalDate;
 
 public class MedicaoVO {
 
+    private Integer id;
+
     private LocalDate data;
 
     private Integer sistolica;
 
     private Integer diastolica;
 
-    private String resultado;
+    private Integer resultado;
 
     public LocalDate getData() {
         return data;
@@ -36,11 +38,19 @@ public class MedicaoVO {
         this.diastolica = diastolica;
     }
 
-    public String getResultado() {
+    public Integer getResultado() {
         return resultado;
     }
 
-    public void setResultado(String resultado) {
+    public void setResultado(Integer resultado) {
         this.resultado = resultado;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

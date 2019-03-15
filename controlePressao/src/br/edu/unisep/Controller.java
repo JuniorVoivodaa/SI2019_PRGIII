@@ -1,5 +1,6 @@
 package br.edu.unisep;
 
+import br.edu.unisep.model.dao.MedicaoDAO;
 import br.edu.unisep.model.vo.MedicaoVO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -93,6 +94,9 @@ public class Controller implements Initializable {
         } else {
             med.setResultado(5);
         }
+
+        var dao = new MedicaoDAO();
+        dao.salvar(med);
 
         // Adiciona o objeto MedicaoVO criado na lista.
         medicoes.add(med);

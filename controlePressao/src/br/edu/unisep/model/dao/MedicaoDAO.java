@@ -60,9 +60,27 @@ public class MedicaoDAO {
                     "postgres", "admin");
 
 
-            var ps = con.prepareStatement("");
+            var ps = con.prepareStatement("select * from registro_medicao");
 
+            // Executa a consulta no banco de dados, recebendo como retorno
+            // um objeto ResultSet
+            var rs = ps.executeQuery();
 
+            // Percorre o resultado da consulta, para gerar os objetos MedicaoVO
+            while (rs.next()) {
+                var m = new MedicaoVO();
+                m.setId( rs.getInt("id_medicao") );
+                m.setSistolica( rs.getInt("vl_sist") );
+                m.setDiastolica( rs.getInt("vl_diast") );
+                m.setResultado( rs.getInt("tp_resultado") );
+
+                var dt = rs.getDate("dt_medicao");
+                m.setData( dt.toLocalDate() );
+
+                retorno.add(m);
+            }
+
+            rs.close();
             ps.close();
             con.close();
 

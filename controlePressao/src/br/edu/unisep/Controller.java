@@ -53,7 +53,6 @@ public class Controller implements Initializable {
         //colData.setCellValueFactory(new PropertyValueFactory<>("data"));
         colSist.setCellValueFactory(new PropertyValueFactory<>("sistolica"));
         colDiast.setCellValueFactory(new PropertyValueFactory<>("diastolica"));
-        colResultado.setCellValueFactory(new PropertyValueFactory<>("resultado"));
 
         var dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -73,6 +72,26 @@ public class Controller implements Initializable {
             return dataFmt;
         });
 
+        colResultado.setCellValueFactory( (cell) -> {
+            var tipo = cell.getValue().getResultado();
+            var resultado = "";
+
+            if (tipo == 1) {
+                resultado = "Normal";
+            } else if (tipo == 2) {
+                resultado = "Pré-Hipertenso";
+            } else if (tipo == 3) {
+                resultado = "Hipertenso I";
+            } else if (tipo == 4) {
+                resultado = "Hipertenso II";
+            } else {
+                resultado = "Crítico";
+            }
+
+            return new SimpleStringProperty(resultado);
+        });
+
+        listar();
     }
 
     public void salvar(ActionEvent event) {
@@ -98,10 +117,8 @@ public class Controller implements Initializable {
         var dao = new MedicaoDAO();
         dao.salvar(med);
 
-        // Adiciona o objeto MedicaoVO criado na lista.
-        medicoes.add(med);
-
         limpar(event);
+        listar();
     }
 
     public void limpar(ActionEvent event) {
@@ -124,6 +141,13 @@ public class Controller implements Initializable {
                     "Selecione um item para excluir");
             msg.show();
         }
+    }
+
+    private void listar() {
+        var dao = new MedicaoDAO();
+        var lista = dao.listar();
+
+        medicoes.setAll(lista);
     }
 
 }

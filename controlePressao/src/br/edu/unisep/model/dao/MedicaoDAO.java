@@ -2,6 +2,7 @@ package br.edu.unisep.model.dao;
 
 import br.edu.unisep.model.vo.MedicaoVO;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,15 +14,7 @@ public class MedicaoDAO {
     public void salvar(MedicaoVO med) {
 
         try {
-
-            // Carrega na memória a classe do Driver de conexão com o banco
-            Class.forName("org.postgresql.Driver");
-
-            // Estabelece uma conexão com o banco de dados
-            var con = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/controle_pressao",
-                        "postgres", "admin");
-
+            var con = obterConexao();
 
             // Define o comando SQL que será executado no banco de dados
             var ps = con.prepareStatement(
@@ -52,15 +45,9 @@ public class MedicaoDAO {
         var retorno = new ArrayList<MedicaoVO>();
 
         try {
-
-            Class.forName("org.postgresql.Driver");
-
-            var con = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/controle_pressao",
-                    "postgres", "admin");
-
-
-            var ps = con.prepareStatement("select * from registro_medicao");
+            var con = obterConexao();
+            var ps = con.prepareStatement(
+                    "select * from registro_medicao order by dt_medicao");
 
             // Executa a consulta no banco de dados, recebendo como retorno
             // um objeto ResultSet
@@ -89,6 +76,66 @@ public class MedicaoDAO {
         }
 
         return retorno;
+    }
+
+    public void excluir(Integer id) {
+
+        try {
+            var con = obterConexao();
+
+            var ps = con.prepareStatement(
+                    "delete from registro_medicao where id_medicao = ?");
+
+            ps.setInt(1, id);
+
+            ps.execute();
+
+            ps.close();
+            con.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void alterar(MedicaoVO medicao) {
+
+        try {
+            var con = obterConexao();
+            var ps = con.prepareStatement("update registro_medicao " +
+                    "set dt_medicao = ?, " +
+                    "vl_sist = ?, " +
+                    "vl_diast = ?," +
+                    "tp_resultado = ? " +
+                    "where id_medicao = ?");
+
+            ps.setDate(1, Date.valueOf(medicao.getData()));
+            ps.setInt(2, medicao.getSistolica());
+            ps.setInt(3, medicao.getDiastolica());
+            ps.setInt(4, medicao.getResultado());
+            ps.setInt(5, medicao.getId());
+
+            ps.execute();
+
+            ps.close();
+            con.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private Connection obterConexao() throws ClassNotFoundException, SQLException {
+        // Carrega na memória a classe do Driver de conexão com o banco
+        Class.forName("org.postgresql.Driver");
+
+        // Estabelece uma conexão com o banco de dados
+        var con = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/controle_pressao",
+                "postgres", "admin");
+
+        return con;
     }
 
 }

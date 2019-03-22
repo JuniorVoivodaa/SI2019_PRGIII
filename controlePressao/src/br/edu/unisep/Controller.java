@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +32,8 @@ public class Controller implements Initializable {
 
     private ObservableList<MedicaoVO> medicoes;
 
+    private MedicaoDAO dao;
+    private MedicaoVO medicao = new MedicaoVO();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,16 +60,6 @@ public class Controller implements Initializable {
 
         var dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-//        colData.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MedicaoVO, String>, ObservableValue<String>>() {
-//            @Override
-//            public ObservableValue<String> call(TableColumn.CellDataFeatures<MedicaoVO, String> cell) {
-//                var data = cell.getValue().getData();
-//                var dataFmt = new SimpleStringProperty(dtf.format(data));
-//                return dataFmt;
-//            }
-//        });
-
-
         colData.setCellValueFactory( (cell) -> {
             var data = cell.getValue().getData();
             var dataFmt = new SimpleStringProperty(dtf.format(data));
@@ -91,31 +85,35 @@ public class Controller implements Initializable {
             return new SimpleStringProperty(resultado);
         });
 
+        this.dao = new MedicaoDAO();
+
         listar();
     }
 
     public void salvar(ActionEvent event) {
 
-        var med = new MedicaoVO();
+        medicao.setData(txtData.getValue());
+        medicao.setSistolica(Integer.valueOf(txtSist.getText()));
+        medicao.setDiastolica(Integer.valueOf(txtDiast.getText()));
 
-        med.setData(txtData.getValue());
-        med.setSistolica(Integer.valueOf(txtSist.getText()));
-        med.setDiastolica(Integer.valueOf(txtDiast.getText()));
-
-        if (med.getSistolica() <= 120 && med.getDiastolica() <= 80) {
-            med.setResultado(1);
-        } else if (med.getSistolica() < 140 || med.getDiastolica() < 90) {
-            med.setResultado(2);
-        } else if (med.getSistolica() < 160 || med.getDiastolica() < 100) {
-            med.setResultado(3);
-        } else if (med.getSistolica() < 180 || med.getDiastolica() < 110) {
-            med.setResultado(4);
+        if (medicao.getSistolica() <= 120 && medicao.getDiastolica() <= 80) {
+            medicao.setResultado(1);
+        } else if (medicao.getSistolica() < 140 || medicao.getDiastolica() < 90) {
+            medicao.setResultado(2);
+        } else if (medicao.getSistolica() < 160 || medicao.getDiastolica() < 100) {
+            medicao.setResultado(3);
+        } else if (medicao.getSistolica() < 180 || medicao.getDiastolica() < 110) {
+            medicao.setResultado(4);
         } else {
-            med.setResultado(5);
+            medicao.setResultado(5);
         }
 
-        var dao = new MedicaoDAO();
-        dao.salvar(med);
+        if (medicao.getId() == null) {
+            dao.salvar(medicao);
+        } else {
+            dao.alterar(medicao);
+            medicao = new MedicaoVO();
+        }
 
         limpar(event);
         listar();
@@ -135,7 +133,8 @@ public class Controller implements Initializable {
 
         // Verifica se o usuário selecionou um item para excluir
         if (med != null) {
-            medicoes.remove(med);
+            dao.excluir(med.getId());
+            listar();
         } else {
             var msg = new Alert(Alert.AlertType.WARNING,
                     "Selecione um item para excluir");
@@ -144,10 +143,23 @@ public class Controller implements Initializable {
     }
 
     private void listar() {
-        var dao = new MedicaoDAO();
         var lista = dao.listar();
-
         medicoes.setAll(lista);
+    }
+
+    public void selecionarItemLista(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY &&
+                event.getClickCount() == 2) {
+
+            // Obtém o objeto selecionado na lista e atribui ao objeto medicao
+            medicao = tabMedicoes.getSelectionModel().getSelectedItem();
+
+            txtData.setValue(medicao.getData());
+            txtSist.setText(medicao.getSistolica().toString());
+            txtDiast.setText(medicao.getDiastolica().toString());
+
+            txtData.requestFocus();
+        }
     }
 
 }

@@ -23,7 +23,7 @@
             <Button mnemonicParsing="false" onAction="#limpar" text="Limpar" />
          </children>
       </HBox>
-      <TableView fx:id="tabMedicoes" layoutX="11.0" layoutY="174.0" prefHeight="272.0" prefWidth="384.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+      <TableView fx:id="tabMedicoes" layoutX="11.0" layoutY="174.0" onMouseClicked="#selecionarItemLista" prefHeight="272.0" prefWidth="384.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
         <columns>
           <TableColumn fx:id="colData" prefWidth="170.0" text="Data" />
           <TableColumn fx:id="colSist" prefWidth="190.0" text="Sistólica" />

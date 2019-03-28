@@ -1,5 +1,6 @@
 package br.edu.unisep;
 
+import br.edu.unisep.model.dao.ProdutoDAO;
 import br.edu.unisep.model.vo.ProdutoVO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +10,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -31,6 +35,8 @@ public class Controller implements Initializable {
     @FXML private Label lblTotal;
 
     private ObservableList<ProdutoVO> produtos;
+    private ProdutoVO produto = new ProdutoVO();
+    private ProdutoDAO dao = new ProdutoDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,6 +52,8 @@ public class Controller implements Initializable {
         colMercadoA.setCellFactory( col -> formatCell() );
         colMercadoB.setCellFactory( col -> formatCell() );
         colMercadoC.setCellFactory( col -> formatCell() );
+
+        listar();
     }
 
     private TableCell<ProdutoVO, Double> formatCell() {
@@ -87,23 +95,30 @@ public class Controller implements Initializable {
     }
 
     public void adicionar(ActionEvent event) {
-        var p = new ProdutoVO();
-        p.setDescricao(txtDescricao.getText());
-        p.setMercadoA(Double.valueOf(txtMercadoA.getText()));
-        p.setMercadoB(Double.valueOf(txtMercadoB.getText()));
-        p.setMercadoC(Double.valueOf(txtMercadoC.getText()));
+        produto.setDescricao(txtDescricao.getText());
+        produto.setMercadoA(Double.valueOf(txtMercadoA.getText()));
+        produto.setMercadoB(Double.valueOf(txtMercadoB.getText()));
+        produto.setMercadoC(Double.valueOf(txtMercadoC.getText()));
 
-        produtos.add(p);
-        totalizar();
+        if (produto.getId() == null) {
+            dao.salvar(produto);
+        } else {
+            dao.alterar(produto);
+        }
 
         limpar();
+
+        listar();
+        totalizar();
     }
 
     public void excluir(ActionEvent event) {
         var p = tabProdutos.getSelectionModel().getSelectedItem();
 
         if (p != null)  {
-            produtos.remove(p);
+            dao.excluir(p.getId());
+
+            listar();
             totalizar();
         } else {
             var msg = new Alert(Alert.AlertType.WARNING, "Selecione um produto para excluir");
@@ -119,14 +134,27 @@ public class Controller implements Initializable {
     }
 
     private void totalizar() {
-//        var total = 0d;
-//        for (ProdutoVO p : produtos) {
-//            total = total + p.getMenor();
-//        }
-
         var total = produtos.stream().mapToDouble(p -> p.getMenor()).sum();
-
         lblTotal.setText(formatarValor(total));
+    }
+
+    private void listar() {
+        var lista = dao.listar();
+        produtos.setAll(lista);
+    }
+
+    public void selecionarItemLista(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY &&
+            event.getClickCount() == 2) {
+
+            produto = tabProdutos.getSelectionModel().getSelectedItem();
+            txtDescricao.setText(produto.getDescricao());
+            txtMercadoA.setText(produto.getMercadoA().toString());
+            txtMercadoB.setText(produto.getMercadoB().toString());
+            txtMercadoC.setText(produto.getMercadoC().toString());
+
+            txtDescricao.requestFocus();
+        }
     }
 
 }

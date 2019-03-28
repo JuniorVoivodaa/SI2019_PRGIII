@@ -2,6 +2,8 @@ package br.edu.unisep.model.vo;
 
 public class ProdutoVO {
 
+    private Integer id;
+
     private String descricao;
 
     private Double mercadoA;
@@ -60,5 +62,13 @@ public class ProdutoVO {
 
     public void setMercadoC(Double mercadoC) {
         this.mercadoC = mercadoC;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

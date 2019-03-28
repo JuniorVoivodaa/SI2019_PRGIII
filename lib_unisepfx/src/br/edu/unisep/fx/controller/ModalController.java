@@ -31,7 +31,11 @@ public abstract class ModalController extends AppController{
 			onClose.execute();
 		}
 	}
-	
+
+	public void setTitle(String title) {
+		this.window.setTitle(title);
+	}
+
 	protected void setParams(Object... p) {
 		this.params = p;
 	}

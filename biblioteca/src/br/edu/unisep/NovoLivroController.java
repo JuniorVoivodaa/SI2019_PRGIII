@@ -1,6 +1,8 @@
 package br.edu.unisep;
 
+import br.edu.unisep.model.dao.AutorDAO;
 import br.edu.unisep.model.vo.AutorVO;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
@@ -23,5 +25,14 @@ public class NovoLivroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        listarAutores();
     }
+
+    private void listarAutores() {
+        var dao = new AutorDAO();
+        var lista = dao.listar();
+
+        cmbAutor.setItems(FXCollections.observableList(lista));
+    }
+
 }

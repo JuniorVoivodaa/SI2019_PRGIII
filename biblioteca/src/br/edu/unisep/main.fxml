@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.unisep.Controller">
    <children>
       <Label layoutX="52.0" layoutY="73.0" text="Minha Biblioteca" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
@@ -30,7 +29,7 @@
       </TableView>
       <HBox layoutX="180.0" layoutY="359.0" prefHeight="27.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
          <children>
-            <Button mnemonicParsing="false" text="Novo Livro" />
+            <Button mnemonicParsing="false" onAction="#abrirNovo" text="Novo Livro" />
             <Button mnemonicParsing="false" text="Excluir" />
          </children>
       </HBox>

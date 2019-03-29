@@ -28,6 +28,7 @@ public class NovoLivroController implements Initializable {
         listarAutores();
     }
 
+
     private void listarAutores() {
         var dao = new AutorDAO();
         var lista = dao.listar();

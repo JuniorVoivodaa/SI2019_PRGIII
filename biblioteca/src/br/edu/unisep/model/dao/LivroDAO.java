@@ -93,4 +93,38 @@ public class LivroDAO {
         }
     }
 
+    public void alterar(LivroVO livro) {
+        try {
+
+            var con = Conexao.obterConexao();
+
+            var sql = new StringBuilder()
+                    .append("UPDATE public.livro ")
+                    .append("SET ds_titulo=?, ")
+                    .append("ds_editora=?, ")
+                    .append("nr_paginas=?, ")
+                    .append("tp_status=?, ")
+                    .append("ds_sinopse=?, ")
+                    .append("id_autor=? ")
+                    .append("WHERE id_livro=?").toString();
+
+            var ps = con.prepareStatement(sql);
+            ps.setString(1, livro.getTitulo());
+            ps.setString(2, livro.getEditora());
+            ps.setInt(3, livro.getPaginas());
+            ps.setInt(4, livro.getStatus());
+            ps.setString(5, livro.getSinopse());
+            ps.setInt(6, livro.getAutor().getId());
+            ps.setInt(7, livro.getId());
+
+            ps.execute();
+
+            ps.close();
+            con.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

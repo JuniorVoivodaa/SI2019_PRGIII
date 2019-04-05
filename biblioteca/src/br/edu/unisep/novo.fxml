@@ -9,10 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="418.0" prefWidth="522.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.unisep.NovoLivroController">
    <children>
-      <Label layoutX="370.0" layoutY="14.0" text="Novo Livro" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="14.0">
+      <Label fx:id="lblTitulo" layoutX="370.0" layoutY="14.0" text="Novo Livro" textAlignment="RIGHT" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="14.0">
          <font>
             <Font size="18.0" />
          </font>
@@ -29,8 +28,8 @@
       <TextArea fx:id="txtSinopse" layoutX="60.0" layoutY="254.0" prefHeight="113.0" prefWidth="402.0" />
       <HBox layoutX="60.0" layoutY="380.0" prefHeight="27.0" prefWidth="395.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0">
          <children>
-            <Button defaultButton="true" mnemonicParsing="false" text="Salvar" />
-            <Button cancelButton="true" mnemonicParsing="false" text="Cancelar" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#salvar" text="Salvar" />
+            <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
          </children>
       </HBox>
    </children>

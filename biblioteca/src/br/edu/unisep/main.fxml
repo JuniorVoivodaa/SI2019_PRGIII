@@ -15,7 +15,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="tabLivros" layoutX="14.0" layoutY="46.0" prefHeight="304.0" prefWidth="572.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="46.0">
+      <TableView fx:id="tabLivros" layoutX="14.0" layoutY="46.0" onMouseClicked="#selecionarLivro" prefHeight="304.0" prefWidth="572.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="46.0">
         <columns>
           <TableColumn fx:id="colTitulo" prefWidth="75.0" text="Título" />
           <TableColumn fx:id="colAutor" prefWidth="75.0" text="Autor" />
@@ -30,7 +30,8 @@
       <HBox layoutX="180.0" layoutY="359.0" prefHeight="27.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
          <children>
             <Button mnemonicParsing="false" onAction="#abrirNovo" text="Novo Livro" />
-            <Button mnemonicParsing="false" text="Excluir" />
+            <Button fx:id="btnLendo" disable="true" mnemonicParsing="false" onAction="#alterarStatus" text="Estou Lendo" />
+            <Button fx:id="btnTerminei" disable="true" mnemonicParsing="false" onAction="#alterarStatus" text="Terminei de Ler" />
          </children>
       </HBox>
    </children>

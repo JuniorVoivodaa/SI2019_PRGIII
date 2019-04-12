@@ -11,6 +11,7 @@
       <element id="extracted-dir" path="$PATH_FX$/javafx.swing.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PATH_FX$/javafx.controls.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PATH_FX$/javafx.graphics.jar" path-in-jar="/" />
+      <element id="module-source" name="lib_unisepfx" />
     </root>
   </artifact>
 </component>

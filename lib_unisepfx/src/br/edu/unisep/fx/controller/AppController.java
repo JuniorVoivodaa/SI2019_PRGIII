@@ -28,6 +28,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -235,23 +236,23 @@ public abstract class AppController implements Initializable {
 					TextField txt = (TextField) obj;
 					
 					if (n.money()) {
-						txt.setOnKeyTyped(KeyUtils::checkMoney);
+						txt.addEventFilter(KeyEvent.KEY_TYPED, KeyUtils::checkMoney);
 					} else if (n.isDecimal()) {
 						
 						if (n.allowsNegative()) {
-							txt.setOnKeyTyped( (e) -> {
+							txt.addEventFilter(KeyEvent.KEY_TYPED, (e) -> {
 								KeyUtils.checkDecimal(e, n.decimalCount());
 							});
 						} else {
-							txt.setOnKeyTyped( (e) -> {
+							txt.addEventFilter(KeyEvent.KEY_TYPED, (e) -> {
 								KeyUtils.checkDecimalPositive(e, n.decimalCount());
 							});
 						}
 					} else {
 						if (n.allowsNegative()) {
-							txt.setOnKeyTyped(KeyUtils::checkInteger);
+							txt.addEventFilter(KeyEvent.KEY_TYPED,KeyUtils::checkInteger);
 						} else {
-							txt.setOnKeyTyped(KeyUtils::checkIntegerPositive);
+							txt.addEventFilter(KeyEvent.KEY_TYPED,KeyUtils::checkIntegerPositive);
 						}
 					}
 				}
